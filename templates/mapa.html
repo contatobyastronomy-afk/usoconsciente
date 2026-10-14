@@ -4,12 +4,14 @@
 <section class="mapa-section">
     <div class="page-header">
         <h2>Mapa do <span class="highlight">Campus</span></h2>
-        <p>Localize pontos de interesse, QR Codes e integrantes do projeto no IFS Lagarto.</p>
+        <p>Localize pontos de interesse, QR Codes, integrantes do projeto e locais de entrevista.</p>
     </div>
 
     {% if current_is_admin %}
     <div class="admin-hint">
-        <span>🛠 <strong>Modo Administrador:</strong> clique em qualquer ponto do mapa para adicionar uma nova marcação.</span>
+        <span>🛠 <strong>Modo Administrador:</strong></span>
+        <span class="hint-extra">👆 Arraste os pinos para reposicionar</span>
+        <span class="hint-extra">➕ Clique no mapa para adicionar</span>
     </div>
     {% endif %}
 
@@ -44,35 +46,60 @@
     <div class="map-legend">
         <div class="legend-item"><span class="legend-dot pin-info"></span> Informação</div>
         <div class="legend-item"><span class="legend-dot pin-qr"></span> QR Code</div>
-        <div class="legend-item"><span class="legend-dot pin-pessoa"></span> Integrante</div>
+        <div class="legend-item"><span class="legend-dot pin-pesquisador"></span> Pesquisador</div>
         <div class="legend-item"><span class="legend-dot pin-evento"></span> Evento</div>
+    </div>
+
+    <div class="map-legend" style="margin-top: 0.5rem;">
+        <div class="legend-item"><span class="status-dot status-online"></span> Online</div>
+        <div class="legend-item"><span class="status-dot status-ocupado"></span> Ocupado</div>
+        <div class="legend-item"><span class="status-dot status-offline"></span> Offline</div>
     </div>
 
     {% if current_is_admin %}
     <div class="modal-overlay" id="pinModal">
         <div class="modal-card">
-            <h3>Nova Marcação</h3>
+            <h3 id="pinModalTitle">Nova Marcação</h3>
             <form id="pinForm" class="auth-form">
+                <input type="hidden" id="pinEditId" value="">
+
                 <div class="form-group">
                     <label>Título</label>
                     <input type="text" id="pinTitulo" placeholder="Ex: QR Code - Bloco A" required>
                 </div>
+
                 <div class="form-group">
                     <label>Tipo</label>
                     <select id="pinTipo">
                         <option value="info">📍 Informação</option>
                         <option value="qr">📱 QR Code</option>
-                        <option value="pessoa">👤 Integrante do Projeto</option>
+                        <option value="pesquisador">🧑‍🔬 Pesquisador / Entrevista</option>
                         <option value="evento">📅 Evento</option>
                     </select>
                 </div>
+
+                <div class="form-group" id="statusGroup" style="display: none;">
+                    <label>Status do Pesquisador</label>
+                    <select id="pinStatus">
+                        <option value="online">🟢 Online (disponível agora)</option>
+                        <option value="ocupado">🟡 Ocupado (em aula/pesquisa)</option>
+                        <option value="offline">⚫ Offline</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="contatoGroup" style="display: none;">
+                    <label>Contato (opcional)</label>
+                    <input type="text" id="pinContato" placeholder="Ex: @usuario, sala 3, WhatsApp...">
+                </div>
+
                 <div class="form-group">
                     <label>Descrição</label>
                     <textarea id="pinDescricao" rows="3" placeholder="Informações adicionais..."></textarea>
                 </div>
+
                 <div class="modal-actions">
                     <button type="button" class="btn-cancel" onclick="fecharModal()">Cancelar</button>
-                    <button type="submit" class="btn-primary">Adicionar</button>
+                    <button type="submit" class="btn-primary" id="pinSubmitBtn">Adicionar</button>
                 </div>
             </form>
         </div>
@@ -84,9 +111,12 @@
             <span class="pin-tipo-badge" id="viewTipo"></span>
             <h3 id="viewTitulo"></h3>
             <p id="viewDescricao"></p>
+            <p id="viewContato" style="display: none;"></p>
+            <p id="viewStatus" style="display: none;"></p>
             <div class="modal-actions">
                 <button type="button" class="btn-cancel" onclick="fecharViewModal()">Fechar</button>
                 {% if current_is_admin %}
+                <button type="button" class="btn-cancel" id="btnEditPin">✏️ Editar</button>
                 <button type="button" class="btn-delete-modal" id="btnDeletePin">🗑 Remover</button>
                 {% endif %}
             </div>

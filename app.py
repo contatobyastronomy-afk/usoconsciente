@@ -24,41 +24,28 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def get_db_connection():
     if not DATABASE_URL:
-        raise Exception("DATABASE_URL não configurada. Configure a variável de ambiente.")
+        raise Exception("DATABASE_URL não configurada.")
     return psycopg2.connect(DATABASE_URL, sslmode='require')
 
 # ========================================================
-# 📍 PINS PADRÃO DO MAPA — IFS Campus Lagarto
-# Posições calibradas com base no mapa oficial do campus.
-# Depois, o admin pode editar/remover/adicionar novos pela interface.
+# 📍 PINS PADRÃO DO MAPA
 # ========================================================
 DEFAULT_PINS = [
-    {"x": 24.0, "y": 22.0, "titulo": "⚽ Ginásio Esportivo",
-     "descricao": "Ginásio Esportivo do Campus Lagarto.", "tipo": "info"},
-    {"x": 43.0, "y": 11.0, "titulo": "🎾 Garagem de Jogos",
-     "descricao": "Espaço de jogos ao ar livre.", "tipo": "info"},
-    {"x": 49.0, "y": 19.0, "titulo": "🖥 COINF / COIRC",
-     "descricao": "Coordenação de Informática e Coordenação de Infraestrutura.", "tipo": "info"},
-    {"x": 38.0, "y": 27.0, "titulo": "🍽 Refeitório",
-     "descricao": "Espaço para refeições dos alunos e servidores. Também abriga a Vivência e o CLF.", "tipo": "info"},
-    {"x": 52.0, "y": 37.0, "titulo": "📗 Bloco 1 — Administração",
-     "descricao": "Direção Geral (GADM), Direção de Ensino, NAPNE, CRE, Biblioteca e NUSE.", "tipo": "info"},
-    {"x": 61.0, "y": 40.0, "titulo": "🧧 Bloco 2 — Salas de Aula",
-     "descricao": "Salas de Aula 01 a 07 (Andar Superior). Laboratórios de CAD, Química, Física, Biologia, Sala de Desenho de Edificações e Eletromecânica.", "tipo": "info"},
-    {"x": 40.0, "y": 46.0, "titulo": "📘 Bloco 3 — Miniauditório e Labs",
-     "descricao": "Miniauditório, Lab. de Física Aplicada, EAD, CCHS, Salas 08 a 10, Lab. de Matemática Aplicada, Refrigeração, Instalações Elétricas, Ensaios, Eletricidade e Eletrônica.", "tipo": "info"},
-    {"x": 55.0, "y": 32.0, "titulo": "⬛ Bloco 4 — Laboratórios Gerais",
-     "descricao": "Lab. de Metrologia, EMEC, Lab. de Eletrônica de Potência, Automação e Instrumentação, Pneumática, Lab. de Mat. de Construção, Empreendedorismo e Sustentabilidade, Solos, Inst. Hidráulicas e Sanitárias, Instalações Elétricas Residenciais.", "tipo": "info"},
-    {"x": 71.0, "y": 29.0, "titulo": "🏠 COED / COAU",
-     "descricao": "Ateliê de Desenho 1 e 2, Sala de Plástica, Laboratório de Desenho Digital 1 e 2, e coordenações COED/COAU.", "tipo": "info"},
-    {"x": 22.0, "y": 68.0, "titulo": "📺 Auditório",
-     "descricao": "Auditório principal do campus. Apresentações, palestras e eventos.", "tipo": "evento"},
-    {"x": 49.0, "y": 80.0, "titulo": "👮 Guarita",
-     "descricao": "Entrada principal e controle de acesso do campus. Também abriga a Torre.", "tipo": "info"},
+    {"x": 24.0, "y": 22.0, "titulo": "⚽ Ginásio Esportivo", "descricao": "Ginásio Esportivo do Campus Lagarto.", "tipo": "info", "status": None, "contato": None},
+    {"x": 43.0, "y": 11.0, "titulo": "🎾 Garagem de Jogos", "descricao": "Espaço de jogos ao ar livre.", "tipo": "info", "status": None, "contato": None},
+    {"x": 49.0, "y": 19.0, "titulo": "🖥 COINF / COIRC", "descricao": "Coordenação de Informática e Coordenação de Infraestrutura.", "tipo": "info", "status": None, "contato": None},
+    {"x": 38.0, "y": 27.0, "titulo": "🍽 Refeitório", "descricao": "Espaço para refeições. Também abriga a Vivência e o CLF.", "tipo": "info", "status": None, "contato": None},
+    {"x": 52.0, "y": 37.0, "titulo": "📗 Bloco 1 — Administração", "descricao": "Direção Geral (GADM), Direção de Ensino, NAPNE, CRE, Biblioteca e NUSE.", "tipo": "info", "status": None, "contato": None},
+    {"x": 61.0, "y": 40.0, "titulo": "🧧 Bloco 2 — Salas de Aula", "descricao": "Salas de Aula 01 a 07. Laboratórios de CAD, Química, Física, Biologia, Desenho de Edificações e Eletromecânica.", "tipo": "info", "status": None, "contato": None},
+    {"x": 40.0, "y": 46.0, "titulo": "📘 Bloco 3 — Miniauditório e Labs", "descricao": "Miniauditório, Lab. de Física Aplicada, EAD, CCHS, Salas 08 a 10, Lab. de Matemática Aplicada, Refrigeração, Instalações Elétricas, Ensaios, Eletricidade e Eletrônica.", "tipo": "info", "status": None, "contato": None},
+    {"x": 55.0, "y": 32.0, "titulo": "⬛ Bloco 4 — Laboratórios Gerais", "descricao": "Lab. de Metrologia, EMEC, Eletrônica de Potência, Automação, Pneumática, Mat. de Construção, Empreendedorismo, Solos, Inst. Hidráulicas, Instalações Elétricas Residenciais.", "tipo": "info", "status": None, "contato": None},
+    {"x": 71.0, "y": 29.0, "titulo": "🏠 COED / COAU", "descricao": "Ateliê de Desenho 1 e 2, Sala de Plástica, Lab. de Desenho Digital 1 e 2, coordenações COED/COAU.", "tipo": "info", "status": None, "contato": None},
+    {"x": 22.0, "y": 68.0, "titulo": "📺 Auditório", "descricao": "Auditório principal do campus. Apresentações, palestras e eventos.", "tipo": "evento", "status": None, "contato": None},
+    {"x": 49.0, "y": 80.0, "titulo": "👮 Guarita", "descricao": "Entrada principal e controle de acesso. Também abriga a Torre.", "tipo": "info", "status": None, "contato": None},
 ]
 
 # ========================================================
-# 🖼️ BUSCADOR DE IMAGENS (detecta extensão automaticamente)
+# 🖼️ BUSCADOR DE IMAGENS
 # ========================================================
 EXTENSOES = ['.jpg', '.jpeg', '.png', '.webp', '.JPG', '.JPEG', '.PNG', '.WEBP']
 
@@ -108,9 +95,21 @@ def init_db():
             titulo TEXT NOT NULL,
             descricao TEXT,
             tipo TEXT DEFAULT 'info',
+            status TEXT,
+            contato TEXT,
             criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
+
+    # Migração: adiciona colunas status e contato se a tabela já existia
+    try:
+        cursor.execute("ALTER TABLE map_pins ADD COLUMN status TEXT")
+    except psycopg2.errors.DuplicateColumn:
+        conn.rollback()
+    try:
+        cursor.execute("ALTER TABLE map_pins ADD COLUMN contato TEXT")
+    except psycopg2.errors.DuplicateColumn:
+        conn.rollback()
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS tips (
@@ -123,18 +122,16 @@ def init_db():
         )
     """)
 
-    # Garante que apenas os e-mails da whitelist sejam admin
     cursor.execute("UPDATE users SET is_admin = 0")
     for email in ADMIN_EMAILS:
         cursor.execute("UPDATE users SET is_admin = 1 WHERE email = %s", (email.lower(),))
 
-    # Popula pins padrão se a tabela estiver vazia
     cursor.execute("SELECT COUNT(*) FROM map_pins")
     if cursor.fetchone()[0] == 0:
         for pin in DEFAULT_PINS:
             cursor.execute(
-                "INSERT INTO map_pins (x_percent, y_percent, titulo, descricao, tipo) VALUES (%s, %s, %s, %s, %s)",
-                (pin['x'], pin['y'], pin['titulo'], pin['descricao'], pin['tipo'])
+                "INSERT INTO map_pins (x_percent, y_percent, titulo, descricao, tipo, status, contato) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                (pin['x'], pin['y'], pin['titulo'], pin['descricao'], pin['tipo'], pin.get('status'), pin.get('contato'))
             )
 
     conn.commit()
@@ -432,14 +429,15 @@ def delete_event(event_id):
 def mapa():
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, x_percent, y_percent, titulo, descricao, tipo FROM map_pins")
+    cursor.execute("SELECT id, x_percent, y_percent, titulo, descricao, tipo, status, contato FROM map_pins")
     rows = cursor.fetchall()
     cursor.close()
     conn.close()
 
     pins = [{
         'id': r[0], 'x_percent': r[1], 'y_percent': r[2],
-        'titulo': r[3], 'descricao': r[4] or '', 'tipo': r[5] or 'info'
+        'titulo': r[3], 'descricao': r[4] or '', 'tipo': r[5] or 'info',
+        'status': r[6] or '', 'contato': r[7] or ''
     } for r in rows]
 
     return render_template('mapa.html', pins=pins)
@@ -457,6 +455,8 @@ def create_pin():
     titulo = (data.get('titulo') or '').strip()
     descricao = (data.get('descricao') or '').strip()
     tipo = data.get('tipo', 'info')
+    status = (data.get('status') or '').strip() or None
+    contato = (data.get('contato') or '').strip() or None
 
     if not titulo:
         return jsonify({"success": False, "error": "Título obrigatório"}), 400
@@ -464,8 +464,8 @@ def create_pin():
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO map_pins (x_percent, y_percent, titulo, descricao, tipo) VALUES (%s, %s, %s, %s, %s) RETURNING id",
-        (x, y, titulo, descricao, tipo)
+        "INSERT INTO map_pins (x_percent, y_percent, titulo, descricao, tipo, status, contato) VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id",
+        (x, y, titulo, descricao, tipo, status, contato)
     )
     new_id = cursor.fetchone()[0]
     conn.commit()
@@ -473,6 +473,56 @@ def create_pin():
     conn.close()
 
     return jsonify({"success": True, "id": new_id})
+
+@app.route('/mapa/pin/move/<int:pin_id>', methods=['POST'])
+@admin_required
+def move_pin(pin_id):
+    data = request.get_json() or {}
+    try:
+        x = float(data.get('x'))
+        y = float(data.get('y'))
+    except (TypeError, ValueError):
+        return jsonify({"success": False, "error": "Posição inválida"}), 400
+
+    x = max(0, min(100, x))
+    y = max(0, min(100, y))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE map_pins SET x_percent = %s, y_percent = %s WHERE id = %s",
+        (x, y, pin_id)
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return jsonify({"success": True})
+
+@app.route('/mapa/pin/update/<int:pin_id>', methods=['POST'])
+@admin_required
+def update_pin(pin_id):
+    data = request.get_json() or {}
+    titulo = (data.get('titulo') or '').strip()
+    descricao = (data.get('descricao') or '').strip()
+    tipo = data.get('tipo', 'info')
+    status = (data.get('status') or '').strip() or None
+    contato = (data.get('contato') or '').strip() or None
+
+    if not titulo:
+        return jsonify({"success": False, "error": "Título obrigatório"}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE map_pins SET titulo = %s, descricao = %s, tipo = %s, status = %s, contato = %s WHERE id = %s",
+        (titulo, descricao, tipo, status, contato, pin_id)
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return jsonify({"success": True})
 
 @app.route('/mapa/pin/delete/<int:pin_id>', methods=['POST'])
 @admin_required
@@ -486,7 +536,7 @@ def delete_pin(pin_id):
     return jsonify({"success": True})
 
 # ========================================================
-# 🚀 INICIALIZAÇÃO (executa ao iniciar o servidor)
+# 🚀 INICIALIZAÇÃO
 # ========================================================
 with app.app_context():
     try:
