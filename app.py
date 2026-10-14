@@ -24,28 +24,41 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def get_db_connection():
     if not DATABASE_URL:
-        raise Exception("DATABASE_URL não configurada.")
+        raise Exception("DATABASE_URL não configurada. Configure a variável de ambiente.")
     return psycopg2.connect(DATABASE_URL, sslmode='require')
 
 # ========================================================
-# 📍 PINS PADRÃO DO MAPA
+# 📍 PINS PADRÃO DO MAPA — IFS Campus Lagarto
+# Posições calibradas com base no mapa oficial do campus.
+# Depois, o admin pode editar/remover/adicionar novos pela interface.
 # ========================================================
 DEFAULT_PINS = [
-    {"x": 55.0, "y": 33.0, "titulo": "📗 Bloco 1 — Administração", "descricao": "Sala do Diretor, Sala da DEN, Sala de Reuniões e Salas Pedagógicas.", "tipo": "info"},
-    {"x": 62.0, "y": 42.0, "titulo": "🧧 Bloco 2 — Salas e Laboratórios", "descricao": "Salas 1 a 7 (Andar Superior). Laboratórios de Química, Arquitetura e Urbanismo, Biologia (Andar Inferior).", "tipo": "info"},
-    {"x": 40.0, "y": 53.0, "titulo": "📘 Bloco 3 — Salas e Coordenações", "descricao": "Salas 8 a 10, Mini Auditório, Coordenadoria de Física, CCHS (Andar Superior). Laboratórios de Projetos (Sophia Polis, LABIC).", "tipo": "info"},
-    {"x": 53.0, "y": 30.0, "titulo": "⬛ Bloco 4 — Laboratórios Gerais", "descricao": "Laboratórios Gerais do campus.", "tipo": "info"},
-    {"x": 38.0, "y": 27.0, "titulo": "🍽 Refeitório", "descricao": "Espaço para refeições dos alunos e servidores.", "tipo": "info"},
-    {"x": 22.0, "y": 68.0, "titulo": "📺 Auditório", "descricao": "Auditório principal do campus.", "tipo": "evento"},
-    {"x": 49.0, "y": 21.0, "titulo": "🖥 COINF / COIRC", "descricao": "Coordenação de Informática e Coordenação de Infraestrutura.", "tipo": "info"},
-    {"x": 72.0, "y": 30.0, "titulo": "🏠 COED / COAU", "descricao": "Coordenações do campus.", "tipo": "info"},
-    {"x": 24.0, "y": 20.0, "titulo": "⚽ Ginásio Esportivo", "descricao": "Ginásio Esportivo do Campus Lagarto.", "tipo": "info"},
-    {"x": 50.0, "y": 78.0, "titulo": "👮 Guarita", "descricao": "Entrada principal e controle de acesso do campus.", "tipo": "info"},
-    {"x": 44.0, "y": 15.0, "titulo": "🎾 Garagem de Jogos", "descricao": "Espaço de jogos ao ar livre.", "tipo": "info"},
+    {"x": 24.0, "y": 22.0, "titulo": "⚽ Ginásio Esportivo",
+     "descricao": "Ginásio Esportivo do Campus Lagarto.", "tipo": "info"},
+    {"x": 43.0, "y": 11.0, "titulo": "🎾 Garagem de Jogos",
+     "descricao": "Espaço de jogos ao ar livre.", "tipo": "info"},
+    {"x": 49.0, "y": 19.0, "titulo": "🖥 COINF / COIRC",
+     "descricao": "Coordenação de Informática e Coordenação de Infraestrutura.", "tipo": "info"},
+    {"x": 38.0, "y": 27.0, "titulo": "🍽 Refeitório",
+     "descricao": "Espaço para refeições dos alunos e servidores. Também abriga a Vivência e o CLF.", "tipo": "info"},
+    {"x": 52.0, "y": 37.0, "titulo": "📗 Bloco 1 — Administração",
+     "descricao": "Direção Geral (GADM), Direção de Ensino, NAPNE, CRE, Biblioteca e NUSE.", "tipo": "info"},
+    {"x": 61.0, "y": 40.0, "titulo": "🧧 Bloco 2 — Salas de Aula",
+     "descricao": "Salas de Aula 01 a 07 (Andar Superior). Laboratórios de CAD, Química, Física, Biologia, Sala de Desenho de Edificações e Eletromecânica.", "tipo": "info"},
+    {"x": 40.0, "y": 46.0, "titulo": "📘 Bloco 3 — Miniauditório e Labs",
+     "descricao": "Miniauditório, Lab. de Física Aplicada, EAD, CCHS, Salas 08 a 10, Lab. de Matemática Aplicada, Refrigeração, Instalações Elétricas, Ensaios, Eletricidade e Eletrônica.", "tipo": "info"},
+    {"x": 55.0, "y": 32.0, "titulo": "⬛ Bloco 4 — Laboratórios Gerais",
+     "descricao": "Lab. de Metrologia, EMEC, Lab. de Eletrônica de Potência, Automação e Instrumentação, Pneumática, Lab. de Mat. de Construção, Empreendedorismo e Sustentabilidade, Solos, Inst. Hidráulicas e Sanitárias, Instalações Elétricas Residenciais.", "tipo": "info"},
+    {"x": 71.0, "y": 29.0, "titulo": "🏠 COED / COAU",
+     "descricao": "Ateliê de Desenho 1 e 2, Sala de Plástica, Laboratório de Desenho Digital 1 e 2, e coordenações COED/COAU.", "tipo": "info"},
+    {"x": 22.0, "y": 68.0, "titulo": "📺 Auditório",
+     "descricao": "Auditório principal do campus. Apresentações, palestras e eventos.", "tipo": "evento"},
+    {"x": 49.0, "y": 80.0, "titulo": "👮 Guarita",
+     "descricao": "Entrada principal e controle de acesso do campus. Também abriga a Torre.", "tipo": "info"},
 ]
 
 # ========================================================
-# 🖼️ BUSCADOR DE IMAGENS
+# 🖼️ BUSCADOR DE IMAGENS (detecta extensão automaticamente)
 # ========================================================
 EXTENSOES = ['.jpg', '.jpeg', '.png', '.webp', '.JPG', '.JPEG', '.PNG', '.WEBP']
 
@@ -110,10 +123,12 @@ def init_db():
         )
     """)
 
+    # Garante que apenas os e-mails da whitelist sejam admin
     cursor.execute("UPDATE users SET is_admin = 0")
     for email in ADMIN_EMAILS:
         cursor.execute("UPDATE users SET is_admin = 1 WHERE email = %s", (email.lower(),))
 
+    # Popula pins padrão se a tabela estiver vazia
     cursor.execute("SELECT COUNT(*) FROM map_pins")
     if cursor.fetchone()[0] == 0:
         for pin in DEFAULT_PINS:
@@ -471,7 +486,7 @@ def delete_pin(pin_id):
     return jsonify({"success": True})
 
 # ========================================================
-# 🚀 INICIALIZAÇÃO
+# 🚀 INICIALIZAÇÃO (executa ao iniciar o servidor)
 # ========================================================
 with app.app_context():
     try:
