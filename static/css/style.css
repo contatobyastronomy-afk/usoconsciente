@@ -1794,3 +1794,67 @@ footer {
         padding: 2px 6px;
     }
 }
+
+/* ============================================
+   PINO TIPO PESQUISADOR
+   ============================================ */
+.map-pin.pin-pesquisador {
+    border-color: #f59e0b;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), 0 0 18px rgba(245, 158, 11, 0.7);
+    position: absolute;
+}
+
+/* Bolinha de status no canto do pino */
+.pin-status-dot {
+    position: absolute;
+    bottom: -3px;
+    right: -3px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--bg-dark);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+.status-dot.status-online,
+.pin-status-dot.status-online {
+    background: #10b981;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.9);
+}
+
+.status-dot.status-ocupado,
+.pin-status-dot.status-ocupado {
+    background: #f59e0b;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.9);
+}
+
+.status-dot.status-offline,
+.pin-status-dot.status-offline {
+    background: #6b7280;
+    box-shadow: 0 0 8px rgba(107, 114, 128, 0.6);
+}
+
+/* Legenda: pontos de status */
+.legend-item .status-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+/* Modal: campos de pesquisador */
+#statusGroup,
+#contatoGroup {
+    display: none;
+}
+
+/* Botão Editar */
+#btnEditPin {
+    border-color: var(--neon-blue);
+    color: var(--neon-blue);
+}
+
+#btnEditPin:hover {
+    background: var(--neon-blue);
+    color: var(--bg-dark);
+}
