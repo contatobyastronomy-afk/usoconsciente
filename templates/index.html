@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="hero-text">
+        <h1>Impacto Digital e <span class="highlight">Consciência</span></h1>
+        <p>Explorando os efeitos científicos do uso excessivo de celulares e redes sociais no comportamento humano e na saúde mental.</p>
+        <a href="/dados" class="btn-primary">Explorar Pesquisa</a>
+    </div>
+    <div class="hero-image">
+        {% if img_celular %}
+            <img src="{{ url_for('static', filename=img_celular) }}" alt="Uso excessivo de celular">
+        {% else %}
+            <div class="img-placeholder">
+                <span>📱</span>
+                <p>Imagem indisponível</p>
+                <small>Salve a foto como <code>static/img/celular.jpg</code></small>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

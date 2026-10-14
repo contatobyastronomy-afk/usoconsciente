@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="quiz-section">
+    <div class="page-header">
+        <h2>Quiz de <span class="highlight">Conscientização</span></h2>
+        <p>Descubra seu perfil de uso digital em menos de 1 minuto.</p>
+    </div>
+
+    <div class="quiz-container">
+        <!-- Barra de progresso -->
+        <div class="quiz-progress">
+            <div class="quiz-progress-bar" id="progressBar"></div>
+        </div>
+        <p class="quiz-step-label" id="stepLabel">Pergunta 1 de 6</p>
+
+        <!-- Área do quiz -->
+        <div id="quizArea">
+            <div class="quiz-card" id="quizCard">
+                <h3 class="quiz-question" id="quizQuestion"></h3>
+                <div class="quiz-options" id="quizOptions"></div>
+            </div>
+        </div>
+
+        <!-- Área de resultado (oculta inicialmente) -->
+        <div id="resultArea" class="result-area" style="display: none;">
+            <div class="result-card" id="resultCard">
+                <span class="result-emoji" id="resultEmoji">🎯</span>
+                <h3 class="result-title" id="resultTitle">Seu perfil</h3>
+                <p class="result-profile" id="resultProfile"></p>
+                <div class="result-score">
+                    <span>Pontuação:</span>
+                    <strong id="resultScore"></strong>
+                </div>
+                <p class="result-desc" id="resultDesc"></p>
+
+                <div class="result-tips">
+                    <h4>💡 Dicas personalizadas</h4>
+                    <ul id="resultTips"></ul>
+                </div>
+
+                <div class="result-actions">
+                    <button class="btn-cancel" onclick="reiniciarQuiz()">🔄 Refazer</button>
+                    <a href="/dicas" class="btn-primary">Ver todas as dicas</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+{% endblock %}

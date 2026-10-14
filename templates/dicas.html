@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="dicas-section">
+    <div class="page-header">
+        <h2>Boas Práticas <span class="highlight">Digitais</span></h2>
+        <p>Dicas práticas para um uso mais consciente da tecnologia no dia a dia.</p>
+    </div>
+
+    {% if current_is_admin %}
+    <div class="admin-panel">
+        <h3>➕ Publicar Nova Dica</h3>
+        <form method="POST" action="/dicas" class="event-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select name="categoria" required>
+                        <option value="Estudo">📚 Estudo</option>
+                        <option value="Sono">😴 Sono</option>
+                        <option value="Social">👥 Social</option>
+                        <option value="Saúde">💚 Saúde</option>
+                        <option value="Lazer">🎮 Lazer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ícone (emoji)</label>
+                    <input type="text" name="icone" placeholder="💡" maxlength="4">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Título da Dica</label>
+                <input type="text" name="titulo" placeholder="Ex: Modo silencioso nas aulas" required>
+            </div>
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea name="descricao" rows="3" placeholder="Explique a dica em poucas palavras..."></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Publicar Dica</button>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if tips %}
+    <div class="dicas-filtros" id="filtros">
+        <button class="filtro-btn active" data-filtro="todos">Todas</button>
+        <button class="filtro-btn" data-filtro="Estudo">📚 Estudo</button>
+        <button class="filtro-btn" data-filtro="Sono">😴 Sono</button>
+        <button class="filtro-btn" data-filtro="Social">👥 Social</button>
+        <button class="filtro-btn" data-filtro="Saúde">💚 Saúde</button>
+        <button class="filtro-btn" data-filtro="Lazer">🎮 Lazer</button>
+    </div>
+
+    <div class="dicas-grid" id="dicasGrid">
+        {% for tip in tips %}
+        <div class="dica-card" data-categoria="{{ tip.categoria }}">
+            <div class="dica-header">
+                <span class="dica-icone">{{ tip.icone }}</span>
+                <span class="dica-categoria">{{ tip.categoria }}</span>
+            </div>
+            <h3 class="dica-titulo">{{ tip.titulo }}</h3>
+            {% if tip.descricao %}
+            <p class="dica-descricao">{{ tip.descricao }}</p>
+            {% endif %}
+            {% if current_is_admin %}
+            <form method="POST" action="/dicas/delete/{{ tip.id }}" onsubmit="return confirm('Remover esta dica?');" class="dica-delete-form">
+                <button type="submit" class="btn-delete">🗑</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>Nenhuma dica cadastrada ainda.</p>
+        {% if current_is_admin %}
+        <p style="margin-top: 10px; color: var(--neon-blue);">Use o painel acima para adicionar a primeira! 👆</p>
+        {% endif %}
+    </div>
+    {% endif %}
+</section>
+
+<script>
+    // Filtro por categoria
+    document.addEventListener('DOMContentLoaded', function() {
+        const botoes = document.querySelectorAll('.filtro-btn');
+        const cards = document.querySelectorAll('.dica-card');
+
+        botoes.forEach(btn => {
+            btn.addEventListener('click', () => {
+                botoes.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filtro = btn.dataset.filtro;
+                cards.forEach(card => {
+                    if (filtro === 'todos' || card.dataset.categoria === filtro) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

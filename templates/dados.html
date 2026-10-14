@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="dados-section">
+    <h2>Análise de Dados Científicos</h2>
+    <p>Os dados abaixo serão preenchidos assim que a pesquisa de campo for concluída.</p>
+    
+    <div class="charts-container">
+        <div class="chart-box">
+            <h3>Tempo de Uso Diário</h3>
+            <canvas id="chartTempoUso"></canvas>
+        </div>
+        <div class="chart-box">
+            <h3>Impacto na Sala de Aula</h3>
+            <canvas id="chartSalaAula"></canvas>
+        </div>
+        <div class="chart-box">
+            <h3>Saúde Mental</h3>
+            <canvas id="chartSaudeMental"></canvas>
+        </div>
+        <div class="chart-box">
+            <h3>Atividades Alternativas</h3>
+            <canvas id="chartAtividades"></canvas>
+        </div>
+    </div>
+</section>
+{% endblock %}

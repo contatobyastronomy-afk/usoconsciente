@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card">
+        <h2>Bem-vindo de <span class="highlight">volta</span></h2>
+        <p class="auth-sub">Entre com sua conta para explorar a pesquisa.</p>
+
+        <form method="POST" action="/login" class="auth-form">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-primary btn-full">Entrar</button>
+        </form>
+
+        <p class="auth-switch">
+            Ainda não tem conta? <a href="/register">Criar conta</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

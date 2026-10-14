@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="objetivos-section">
+    <div class="objetivos-image">
+        {% if img_dardo %}
+            <img src="{{ url_for('static', filename=img_dardo) }}" alt="Foco nos objetivos">
+        {% else %}
+            <div class="img-placeholder">
+                <span>🎯</span>
+                <p>Imagem indisponível</p>
+                <small>Salve a foto como <code>static/img/dardo.jpg</code></small>
+            </div>
+        {% endif %}
+    </div>
+    <div class="objetivos-text">
+        <h2>Objetivos do <span class="highlight">Projeto</span></h2>
+        <p>Nossa pesquisa científica e tecnológica no IFS Campus Lagarto visa investigar as consequências do uso excessivo de dispositivos digitais. Através de metodologias rigorosas, buscamos desenvolver soluções práticas que promovam conscientização e o equilíbrio digital, demonstrando que a vida humana não depende exclusivamente de tecnologias digitais.</p>
+    </div>
+</section>
+{% endblock %}

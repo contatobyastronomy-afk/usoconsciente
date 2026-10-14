@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="evento-section">
+    <div class="page-header">
+        <h2>Próximos <span class="highlight">Eventos</span></h2>
+        <p>Acompanhe as datas importantes e avisos do projeto UsoConsciente.</p>
+    </div>
+
+    {% if current_is_admin %}
+    <div class="admin-panel glass">
+        <h3>➕ Publicar Novo Evento</h3>
+        <form method="POST" action="/evento" class="event-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" name="titulo" placeholder="Ex: Apresentação Final" required>
+                </div>
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" name="data" required>
+                </div>
+                <div class="form-group">
+                    <label>Hora</label>
+                    <input type="time" name="hora">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Local</label>
+                <input type="text" name="local" placeholder="Ex: Auditório IFS Lagarto">
+            </div>
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea name="descricao" rows="3" placeholder="Detalhes do evento..."></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Publicar Evento</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="events-list">
+        {% if events %}
+            {% for event in events %}
+            <div class="event-card glass">
+                <div class="event-date">
+                    <span class="event-day">{{ event.dia }}</span>
+                    <span class="event-month">{{ event.mes }}</span>
+                </div>
+                <div class="event-info">
+                    <h3>{{ event.titulo }}</h3>
+                    <p class="event-meta">
+                        📅 {{ event.data }}
+                        {% if event.hora %} · 🕐 {{ event.hora }}{% endif %}
+                        {% if event.local %} · 📍 {{ event.local }}{% endif %}
+                    </p>
+                    {% if event.descricao %}<p class="event-desc">{{ event.descricao }}</p>{% endif %}
+                </div>
+                {% if current_is_admin %}
+                <form method="POST" action="/evento/delete/{{ event.id }}" onsubmit="return confirm('Remover este evento?');">
+                    <button type="submit" class="btn-delete" title="Remover evento">🗑</button>
+                </form>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state glass">
+                <p>Nenhum evento cadastrado ainda.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

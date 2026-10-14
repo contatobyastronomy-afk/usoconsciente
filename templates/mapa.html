@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="mapa-section">
+    <div class="page-header">
+        <h2>Mapa do <span class="highlight">Campus</span></h2>
+        <p>Localize pontos de interesse, QR Codes e integrantes do projeto no IFS Lagarto.</p>
+    </div>
+
+    {% if current_is_admin %}
+    <div class="admin-hint">
+        <span>🛠 <strong>Modo Administrador:</strong> clique em qualquer ponto do mapa para adicionar uma nova marcação.</span>
+    </div>
+    {% endif %}
+
+    <div class="map-toolbar">
+        <div class="map-toolbar-left">
+            <button class="map-btn" id="btnZoomIn" title="Aproximar">＋</button>
+            <button class="map-btn" id="btnZoomOut" title="Afastar">－</button>
+            <button class="map-btn" id="btnReset" title="Resetar">⟲</button>
+        </div>
+        <div class="map-toolbar-right">
+            <span class="map-hint-text">🖱 Arraste para mover • Rolagem para dar zoom</span>
+        </div>
+    </div>
+
+    <div class="map-wrapper">
+        <div class="map-viewport" id="mapViewport">
+            <div class="map-container" id="mapContainer">
+                {% if img_mapa %}
+                    <img src="{{ url_for('static', filename=img_mapa) }}" alt="Mapa do IFS Lagarto" id="mapImage" draggable="false">
+                {% else %}
+                    <div class="img-placeholder img-placeholder-large" id="mapPlaceholder">
+                        <span>🗺️</span>
+                        <p>Mapa indisponível</p>
+                        <small>Salve a foto como <code>static/img/mapa.jpg</code></small>
+                    </div>
+                {% endif %}
+                <div class="pins-layer" id="pinsLayer"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="map-legend">
+        <div class="legend-item"><span class="legend-dot pin-info"></span> Informação</div>
+        <div class="legend-item"><span class="legend-dot pin-qr"></span> QR Code</div>
+        <div class="legend-item"><span class="legend-dot pin-pessoa"></span> Integrante</div>
+        <div class="legend-item"><span class="legend-dot pin-evento"></span> Evento</div>
+    </div>
+
+    {% if current_is_admin %}
+    <div class="modal-overlay" id="pinModal">
+        <div class="modal-card">
+            <h3>Nova Marcação</h3>
+            <form id="pinForm" class="auth-form">
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" id="pinTitulo" placeholder="Ex: QR Code - Bloco A" required>
+                </div>
+                <div class="form-group">
+                    <label>Tipo</label>
+                    <select id="pinTipo">
+                        <option value="info">📍 Informação</option>
+                        <option value="qr">📱 QR Code</option>
+                        <option value="pessoa">👤 Integrante do Projeto</option>
+                        <option value="evento">📅 Evento</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="pinDescricao" rows="3" placeholder="Informações adicionais..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="modal-overlay" id="viewModal">
+        <div class="modal-card">
+            <span class="pin-tipo-badge" id="viewTipo"></span>
+            <h3 id="viewTitulo"></h3>
+            <p id="viewDescricao"></p>
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" onclick="fecharViewModal()">Fechar</button>
+                {% if current_is_admin %}
+                <button type="button" class="btn-delete-modal" id="btnDeletePin">🗑 Remover</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    window.MAP_PINS = {{ pins | tojson }};
+    window.IS_ADMIN = {{ 'true' if current_is_admin else 'false' }};
+    window.HAS_MAP = {{ 'true' if img_mapa else 'false' }};
+</script>
+<script src="{{ url_for('static', filename='js/mapa.js') }}"></script>
+{% endblock %}
